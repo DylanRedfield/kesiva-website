@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kesiva - Deep Personalised Outbound</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Fonts matching the Awake template essence: Modern Serif + Clean Sans -->
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        serif: ['"Instrument Serif"', 'serif'],
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                    },
+                    colors: {
+                        awake: {
+                            black: '#111111',
+                            purple: '#4F46E5', /* Primary Action Color */
+                            pastel: {
+                                purple: '#F3E8FF',
+                                pink: '#FCE7F3',
+                                blue: '#DBEAFE',
+                                orange: '#FFEDD5',
+                                green: '#DCFCE7',
+                                yellow: '#FEF9C3'
+                            },
+                            card: {
+                                yellow: '#FDE047',
+                                dark: '#1F2937',
+                                purple: '#6366F1'
+                            }
+                        }
+                    },
+                    animation: {
+                        'marquee': 'marquee 25s linear infinite',
+                        'fade-in-up': 'fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                    },
+                    keyframes: {
+                        marquee: {
+                            '0%': { transform: 'translateX(0%)' },
+                            '100%': { transform: 'translateX(-100%)' },
+                        },
+                        fadeInUp: {
+                            '0%': { opacity: '0', transform: 'translateY(40px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Typography Utilities */
+        .font-display {
+            font-family: 'Instrument Serif', serif;
+        }
+
+        /* Smooth Reveal Class */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Text Scrubbing Styles */
+        .scrub-text {
+            color: #d1d5db; /* Default Grey */
+            transition: color 0.3s ease;
+        }
+        .scrub-word {
+            opacity: 0.2;
+            transition: opacity 0.3s ease;
+            display: inline-block;
+        }
+        .scrub-word.active {
+            opacity: 1;
+            color: #111111;
+        }
+
+        /* Magnetic Button Base */
+        .magnetic-btn {
+            transition: transform 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            will-change: transform;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+        /* Hover Card Lift */
+        .hover-lift {
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
+        }
+        .hover-lift:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px -10px rgba(0,0,0,0.1);
+        }
+
+        /* Hero Background Gradient */
+        .hero-gradient {
+            background:
+                radial-gradient(circle at 0% 0%, #E0F2FE 0%, transparent 60%),
+                radial-gradient(circle at 100% 0%, #FEF3C7 0%, transparent 60%);
+        }
+    </style>
+</head>
+<body class="font-sans text-gray-800 bg-white overflow-x-hidden selection:bg-awake-purple selection:text-white">
+
+    <!-- Navbar -->
+    <nav class="fixed w-full z-50 bg-white/0 backdrop-blur-lg border-b border-gray-100/50 transition-all duration-300" id="navbar">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <!-- Logo -->
+            <div class="flex items-center gap-2 z-50">
+                <div class="w-8 h-8 bg-black rounded-lg flex items-center justify-center text-white font-bold">K</div>
+                <span class="text-xl font-bold tracking-tight">Kesiva</span>
+            </div>
+
+            <!-- Desktop Menu -->
+            <div class="hidden md:flex bg-white/50 px-6 py-2 rounded-full border border-gray-200/50 backdrop-blur-sm space-x-8 text-sm font-medium text-gray-600 shadow-sm">
+                <a href="#research" class="hover:text-black transition">Research</a>
+                <a href="#process" class="hover:text-black transition">How it Works</a>
+                <a href="#product" class="hover:text-black transition">The Product</a>
+                <a href="#why" class="hover:text-black transition">Why Kesiva</a>
+            </div>
+
+            <!-- CTA Button -->
+            <a href="https://calendar.app.google/rXyD8qCKjHBoZKU29" target="_blank" class="magnetic-btn hidden md:flex items-center gap-2 bg-black text-white px-6 py-2.5 rounded-full text-sm font-medium hover:bg-gray-800 transition group shadow-lg">
+                Get Started
+                <div class="w-5 h-5 bg-white text-black rounded-full flex items-center justify-center transform group-hover:rotate-45 transition duration-300">
+                    <i class="fas fa-arrow-up text-xs"></i>
+                </div>
+            </a>
+
+            <!-- Mobile Menu Toggle -->
+            <button class="md:hidden z-50 text-2xl" onclick="document.getElementById('mobile-menu').classList.toggle('hidden')">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden fixed inset-0 bg-white z-40 pt-24 px-6">
+            <div class="flex flex-col space-y-6 text-2xl font-display">
+                <a href="#research" onclick="document.getElementById('mobile-menu').classList.add('hidden')">Research</a>
+                <a href="#process" onclick="document.getElementById('mobile-menu').classList.add('hidden')">How it Works</a>
+                <a href="#product" onclick="document.getElementById('mobile-menu').classList.add('hidden')">The Product</a>
+                <a href="https://calendar.app.google/rXyD8qCKjHBoZKU29" target="_blank" class="text-awake-purple">Get Started</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <section class="hero-gradient pt-32 pb-20 md:pt-48 md:pb-32 px-6 min-h-[90vh] flex flex-col justify-center relative overflow-hidden">
+
+        <div class="container mx-auto max-w-5xl text-center relative z-10">
+
+            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/80 border border-gray-200/50 text-xs font-medium text-gray-600 mb-8 animate-fade-in-up backdrop-blur-sm shadow-sm">
+                <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+                Indepth personalised outbound, the kind people think only humans can write.
+            </div>
+
+            <h1 class="font-display text-5xl md:text-7xl lg:text-9xl leading-[1.1] mb-8 text-awake-black animate-fade-in-up" style="animation-delay: 0.1s;">
+                Deep, personalised <br>
+                outbound that <span class="italic font-light text-gray-500">prospects can't ignore.</span>
+            </h1>
+
+            <p class="text-lg md:text-xl text-gray-500 max-w-3xl mx-auto mb-12 leading-relaxed animate-fade-in-up scrub-target" style="animation-delay: 0.2s;">
+                We turn your target accounts into fully understood, context-rich profiles and generate high-accuracy emails and messaging that convert. Not templates. Not guesswork. Real personalisation built for replies, meetings, and pipeline.
+            </p>
+
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-6 animate-fade-in-up" style="animation-delay: 0.3s;">
+                <a href="https://calendar.app.google/rXyD8qCKjHBoZKU29" target="_blank" class="magnetic-btn bg-awake-purple text-white px-10 py-5 rounded-full font-medium text-lg hover:bg-indigo-600 transition flex items-center gap-2 group shadow-xl shadow-indigo-200/50">
+                    Get Started
+                    <i class="fas fa-arrow-right transform group-hover:translate-x-1 transition"></i>
+                </a>
+                <a href="#product" class="flex items-center gap-2 text-gray-600 hover:text-black transition">
+                    <span class="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center bg-white"><i class="fas fa-play text-xs ml-0.5"></i></span>
+                    <span class="text-sm font-medium">See Examples</span>
+                </a>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- LOGO MARQUEE -->
+    <section class="border-y border-gray-100 bg-gray-50/30 py-10 overflow-hidden backdrop-blur-sm">
+        <p class="text-center text-xs font-bold uppercase tracking-widest text-gray-400 mb-8">Trusted by startups, scale-ups, and enterprises worldwide</p>
+        <div class="relative w-full">
+            <div class="flex whitespace-nowrap animate-marquee items-center gap-16 opacity-60 grayscale hover:grayscale-0 transition duration-500">
+                <i class="fab fa-aws text-4xl"></i>
+                <i class="fab fa-google text-3xl"></i>
+                <i class="fab fa-airbnb text-4xl"></i>
+                <i class="fab fa-uber text-4xl"></i>
+                <i class="fab fa-stripe text-4xl"></i>
+                <i class="fab fa-spotify text-3xl"></i>
+                <i class="fab fa-slack text-3xl"></i>
+                <i class="fab fa-aws text-4xl"></i>
+                <i class="fab fa-google text-3xl"></i>
+                <i class="fab fa-airbnb text-4xl"></i>
+                <i class="fab fa-uber text-4xl"></i>
+                <i class="fab fa-stripe text-4xl"></i>
+                <i class="fab fa-spotify text-3xl"></i>
+                <i class="fab fa-slack text-3xl"></i>
+            </div>
+            <div class="absolute inset-y-0 left-0 w-20 bg-gradient-to-r from-white to-transparent"></div>
+            <div class="absolute inset-y-0 right-0 w-20 bg-gradient-to-l from-white to-transparent"></div>
+        </div>
+    </section>
+
+    <!-- WHY COMPANIES USE THIS (Replaces Stats) -->
+    <section class="py-20 bg-white">
+        <div class="container mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-12 text-center">
+                <div class="reveal">
+                    <div class="w-16 h-16 bg-awake-pastel-purple rounded-full flex items-center justify-center mx-auto mb-6 text-2xl text-purple-600"><i class="fas fa-bullseye"></i></div>
+                    <h3 class="font-display text-2xl text-awake-black mb-3">Effective Personalisation</h3>
+                    <p class="text-gray-500 text-sm">Personalisation that actually moves the needle, not just token swapping.</p>
+                </div>
+                <div class="reveal" style="transition-delay: 0.1s;">
+                    <div class="w-16 h-16 bg-awake-pastel-blue rounded-full flex items-center justify-center mx-auto mb-6 text-2xl text-blue-600"><i class="fas fa-clock"></i></div>
+                    <h3 class="font-display text-2xl text-awake-black mb-3">Zero SDR Time</h3>
+                    <p class="text-gray-500 text-sm">Replace hours of manual research per account with instant profiles.</p>
+                </div>
+                <div class="reveal" style="transition-delay: 0.2s;">
+                    <div class="w-16 h-16 bg-awake-pastel-green rounded-full flex items-center justify-center mx-auto mb-6 text-2xl text-green-600"><i class="fas fa-comment-dots"></i></div>
+                    <h3 class="font-display text-2xl text-awake-black mb-3">Higher Quality</h3>
+                    <p class="text-gray-500 text-sm">Messaging that doesn't sound templated. Works with your existing tools.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- RESEARCH SECTION (Services) -->
+    <section id="research" class="py-24 bg-white">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16 reveal">
+                <h2 class="font-display text-5xl md:text-6xl mb-6 scrub-target">Outbound that reads like<br><span class="italic text-gray-400">manual research.</span></h2>
+                <p class="text-gray-500 max-w-2xl mx-auto text-xl scrub-target">Most "personalisation" is just surface level. We analyse and synthesise deep data points for each account.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+                <!-- Card 1 -->
+                <div class="bg-awake-pastel-purple p-8 rounded-[2rem] hover-lift reveal group cursor-pointer">
+                    <div class="w-12 h-12 bg-white rounded-xl flex items-center justify-center text-xl mb-6 group-hover:scale-110 transition">
+                        <i class="fas fa-box-open text-purple-500"></i>
+                    </div>
+                    <h3 class="font-display text-2xl mb-3">Product & Positioning</h3>
+                    <p class="text-gray-600 text-sm leading-relaxed mb-6">Their commercial model, core value props, customer segments, and key value levers.</p>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="bg-awake-pastel-pink p-8 rounded-[2rem] hover-lift reveal group cursor-pointer" style="transition-delay: 0.1s;">
+                    <div class="w-12 h-12 bg-white rounded-xl flex items-center justify-center text-xl mb-6 group-hover:scale-110 transition">
+                        <i class="fas fa-search-dollar text-pink-500"></i>
+                    </div>
+                    <h3 class="font-display text-2xl mb-3">Strategic Signals</h3>
+                    <p class="text-gray-600 text-sm leading-relaxed mb-6">Hiring trends, roadmap clues, competitive pressure points, and decision triggers.</p>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="bg-awake-pastel-blue p-8 rounded-[2rem] hover-lift reveal group cursor-pointer" style="transition-delay: 0.2s;">
+                    <div class="w-12 h-12 bg-white rounded-xl flex items-center justify-center text-xl mb-6 group-hover:scale-110 transition">
+                        <i class="fas fa-users-cog text-blue-500"></i>
+                    </div>
+                    <h3 class="font-display text-2xl mb-3">ICP Fit Indicators</h3>
+                    <p class="text-gray-600 text-sm leading-relaxed mb-6">Industry, size, maturity stage, and pain patterns typical for this type of company.</p>
+                </div>
+
+                <!-- Card 4 -->
+                <div class="bg-awake-pastel-orange p-8 rounded-[2rem] hover-lift reveal group cursor-pointer">
+                    <div class="w-12 h-12 bg-white rounded-xl flex items-center justify-center text-xl mb-6 group-hover:scale-110 transition">
+                        <i class="fas fa-book-reader text-orange-500"></i>
+                    </div>
+                    <h3 class="font-display text-2xl mb-3">Narrative Analysis</h3>
+                    <p class="text-gray-600 text-sm leading-relaxed mb-6">How they talk about themselves, differentiation themes, and language patterns.</p>
+                </div>
+
+                <!-- Card 5 -->
+                <div class="bg-awake-pastel-green p-8 rounded-[2rem] hover-lift reveal group cursor-pointer" style="transition-delay: 0.1s;">
+                    <div class="w-12 h-12 bg-white rounded-xl flex items-center justify-center text-xl mb-6 group-hover:scale-110 transition">
+                        <i class="fas fa-bolt text-green-600"></i>
+                    </div>
+                    <h3 class="font-display text-2xl mb-3">Context Events</h3>
+                    <p class="text-gray-600 text-sm leading-relaxed mb-6">Announcements, funding, partnerships, strategy shifts, and operational clues.</p>
+                </div>
+
+                <!-- Card 6 -->
+                <div class="bg-awake-pastel-yellow p-8 rounded-[2rem] hover-lift reveal group cursor-pointer" style="transition-delay: 0.2s;">
+                    <div class="w-12 h-12 bg-white rounded-xl flex items-center justify-center text-xl mb-6 group-hover:scale-110 transition">
+                        <i class="fas fa-paper-plane text-yellow-600"></i>
+                    </div>
+                    <h3 class="font-display text-2xl mb-3">Precise Messaging</h3>
+                    <p class="text-gray-600 text-sm leading-relaxed mb-6">All distilled into precise messaging built around conversion.</p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- DARK CTA STRIP -->
+    <section class="px-6 py-6">
+        <div class="container mx-auto">
+            <div class="bg-awake-black rounded-[3rem] px-8 py-16 md:px-16 text-white relative overflow-hidden reveal">
+                <!-- Background Glow -->
+                <div class="absolute top-0 right-0 w-96 h-96 bg-awake-purple opacity-20 rounded-full blur-3xl translate-x-1/2 -translate-y-1/2"></div>
+
+                <div class="relative z-10 flex flex-col md:flex-row items-center justify-between gap-8">
+                    <div>
+                        <h3 class="font-display text-3xl md:text-4xl mb-2">Ready to upgrade your outbound?</h3>
+                        <p class="text-gray-400">See how in depth personalisation changes conversions.</p>
+                    </div>
+                    <div class="flex gap-4">
+                        <a href="https://calendar.app.google/rXyD8qCKjHBoZKU29" target="_blank" class="magnetic-btn bg-white text-black px-6 py-3 rounded-full font-medium hover:bg-gray-200 transition flex items-center gap-2">
+                            Get Started <i class="fas fa-arrow-right transform -rotate-45"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PROCESS SECTION -->
+    <section id="process" class="py-24 bg-white">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-20 reveal">
+                <h2 class="font-display text-5xl md:text-6xl scrub-target">How it<br><span class="italic text-gray-400">works</span></h2>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+
+                <!-- Step 1 -->
+                <div class="group rounded-[2.5rem] bg-gray-50 overflow-hidden hover-lift reveal cursor-pointer">
+                    <div class="h-64 bg-gray-200 overflow-hidden relative">
+                        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80" class="w-full h-full object-cover group-hover:scale-105 transition duration-700" alt="List">
+                        <div class="absolute top-6 left-6 bg-white px-4 py-1 rounded-full text-xs font-bold">STEP 01</div>
+                    </div>
+                    <div class="p-8">
+                        <h3 class="font-display text-3xl mb-3">Provide Target List</h3>
+                        <p class="text-gray-500">You give us your target list, or we help you refine your ICP and generate a clean target list together.</p>
+                    </div>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="group rounded-[2.5rem] bg-gray-50 overflow-hidden hover-lift reveal cursor-pointer" style="transition-delay: 0.1s;">
+                    <div class="h-64 bg-gray-200 overflow-hidden relative">
+                        <img src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&w=800&q=80" class="w-full h-full object-cover group-hover:scale-105 transition duration-700" alt="Analysis">
+                        <div class="absolute top-6 left-6 bg-white px-4 py-1 rounded-full text-xs font-bold">STEP 02</div>
+                    </div>
+                    <div class="p-8">
+                        <h3 class="font-display text-3xl mb-3">Deep Analysis</h3>
+                        <p class="text-gray-500">We run each account through our research engine. Our system performs a deep analysis using multiple data layers.</p>
+                    </div>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="group rounded-[2.5rem] bg-gray-50 overflow-hidden hover-lift reveal cursor-pointer">
+                    <div class="h-64 bg-gray-200 overflow-hidden relative">
+                        <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=800&q=80" class="w-full h-full object-cover group-hover:scale-105 transition duration-700" alt="Messaging">
+                        <div class="absolute top-6 left-6 bg-white px-4 py-1 rounded-full text-xs font-bold">STEP 03</div>
+                    </div>
+                    <div class="p-8">
+                        <h3 class="font-display text-3xl mb-3">Generate Messaging</h3>
+                        <p class="text-gray-500">We generate messaging built around that context. Each company gets a fully tailored outbound kit.</p>
+                    </div>
+                </div>
+
+                <!-- Step 4 -->
+                <div class="group rounded-[2.5rem] bg-gray-50 overflow-hidden hover-lift reveal cursor-pointer" style="transition-delay: 0.1s;">
+                    <div class="h-64 bg-gray-200 overflow-hidden relative">
+                        <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80" class="w-full h-full object-cover group-hover:scale-105 transition duration-700" alt="Conversion">
+                        <div class="absolute top-6 left-6 bg-white px-4 py-1 rounded-full text-xs font-bold">STEP 04</div>
+                    </div>
+                    <div class="p-8">
+                        <h3 class="font-display text-3xl mb-3">Higher Conversion</h3>
+                        <p class="text-gray-500">Your team sends the emails. Better emails → better replies → better meetings → better pipeline.</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- WHO THIS IS FOR / WHY IT WORKS -->
+    <section id="why" class="py-24 bg-white">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16 reveal">
+                <h2 class="font-display text-5xl md:text-6xl scrub-target">Why prospects<br><span class="italic text-gray-400">respond</span></h2>
+            </div>
+
+            <div class="flex flex-col lg:flex-row gap-6">
+                <!-- Main Dark Card (Who This Is For) -->
+                <div class="lg:w-2/3 bg-black rounded-[2.5rem] p-10 md:p-14 text-white relative overflow-hidden reveal group">
+                    <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=80" class="absolute inset-0 w-full h-full object-cover opacity-20 group-hover:scale-105 transition duration-700" alt="Team">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black via-black/80 to-transparent"></div>
+
+                    <div class="relative z-10 flex flex-col h-full justify-between min-h-[300px]">
+                        <span class="text-xs font-bold uppercase tracking-widest text-gray-400">Who This Is For</span>
+                        <div>
+                            <h3 class="font-display text-3xl mb-6">Designed for teams who need higher reply rates.</h3>
+                            <div class="space-y-2 text-gray-300">
+                                <p><i class="fas fa-check text-awake-purple mr-2"></i> SaaS teams running outbound</p>
+                                <p><i class="fas fa-check text-awake-purple mr-2"></i> Agencies managing outreach for multiple clients</p>
+                                <p><i class="fas fa-check text-awake-purple mr-2"></i> Founders doing early sales themselves</p>
+                                <p><i class="fas fa-check text-awake-purple mr-2"></i> Anyone who wants hand-written quality without the manual work</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Why It Works (Yellow) -->
+                <div class="lg:w-1/3 bg-awake-card-yellow rounded-[2.5rem] p-10 flex flex-col justify-between reveal hover-lift" style="transition-delay: 0.1s;">
+                    <span class="text-xs font-bold uppercase tracking-widest opacity-60">Why It Works</span>
+                    <div>
+                        <p class="font-display text-3xl mb-4 leading-tight">Because prospects can tell the difference.</p>
+                        <p class="text-lg font-medium leading-relaxed opacity-80">High-context outbound stands out instantly. It feels relevant. It earns attention. It converts.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- THE PRODUCT (Replaces Plans) -->
+    <section id="product" class="py-24 bg-white">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16 reveal">
+                <h2 class="font-display text-5xl md:text-6xl">What you get<br><span class="italic text-gray-400">The Product</span></h2>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+
+                <!-- Card 1: Research (Yellow) -->
+                <div class="bg-awake-pastel-yellow rounded-[2.5rem] p-10 hover-lift reveal">
+                    <div class="inline-block bg-black text-white px-4 py-1.5 rounded-full text-xs font-bold mb-6">The Research</div>
+                    <p class="text-gray-600 mb-8 h-12">Deep account intelligence before you even say hello.</p>
+
+                    <div class="mt-10 space-y-6">
+                        <div>
+                            <h4 class="font-bold mb-2">1. Deep Account Summary</h4>
+                            <p class="text-sm text-gray-600">A sharp, 60–150 word breakdown of who they are, what they do, how they make money, and why they fit your ICP.</p>
+                        </div>
+                        <div>
+                            <h4 class="font-bold mb-2">2. The Messaging Angle</h4>
+                            <p class="text-sm text-gray-600">The strongest outbound hook tied directly to their context, business model, and pain points.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 2: Output (Purple) -->
+                <div class="bg-awake-card-purple text-white rounded-[2.5rem] p-10 hover-lift reveal" style="transition-delay: 0.1s;">
+                    <div class="inline-block bg-black text-white px-4 py-1.5 rounded-full text-xs font-bold mb-6">The Output</div>
+                    <p class="text-indigo-200 mb-8 h-12">Everything ready to send across multiple channels.</p>
+
+                    <div class="mt-10 space-y-6">
+                        <div>
+                            <h4 class="font-bold mb-2">3. Personalised Email</h4>
+                            <p class="text-sm text-indigo-100">A primary outbound email written as if you researched them manually.</p>
+                        </div>
+                        <div>
+                            <h4 class="font-bold mb-2">4. 2–3 Follow-Up Emails</h4>
+                            <p class="text-sm text-indigo-100">Contextual, relevant, and value-driven, not generic replies.</p>
+                        </div>
+                        <div>
+                            <h4 class="font-bold mb-2">5. LinkedIn/Short Messages</h4>
+                            <p class="text-sm text-indigo-100">Platform-ready variations for multi-channel outbound.</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="text-center mt-16">
+                 <p class="text-gray-500 mb-4">Delivery Format: PDF, Excel, Slack, Notion - whatever you require.</p>
+                 <a href="https://calendar.app.google/rXyD8qCKjHBoZKU29" target="_blank" class="magnetic-btn inline-flex items-center gap-2 bg-black text-white px-8 py-4 rounded-full font-medium hover:bg-gray-800 transition">
+                    Start Your Pilot <i class="fas fa-arrow-right"></i>
+                 </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer id="contact" class="bg-white pt-20 pb-10 border-t border-gray-100">
+        <div class="container mx-auto px-6">
+            <div class="flex flex-col md:flex-row justify-between items-start gap-12 mb-20">
+                <div class="md:w-1/3">
+                    <div class="flex items-center gap-2 mb-6">
+                        <div class="w-8 h-8 bg-black rounded-lg flex items-center justify-center text-white font-bold">K</div>
+                        <span class="text-xl font-bold">Kesiva</span>
+                    </div>
+                    <p class="text-gray-500 leading-relaxed">
+                        Indepth personalised outbound, the kind people think only humans can write.
+                    </p>
+                </div>
+
+                <div class="flex gap-16">
+                    <div>
+                        <h4 class="font-bold mb-6">Sitemap</h4>
+                        <ul class="space-y-4 text-gray-500 text-sm">
+                            <li><a href="#" class="hover:text-black">Research</a></li>
+                            <li><a href="#process" class="hover:text-black">How it Works</a></li>
+                            <li><a href="#product" class="hover:text-black">Product</a></li>
+                            <li><a href="#why" class="hover:text-black">Why Kesiva</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-bold mb-6">Contact</h4>
+                        <ul class="space-y-4 text-gray-500 text-sm">
+                            <li>hello@kesiva.com</li>
+                            <li><a href="https://calendar.app.google/rXyD8qCKjHBoZKU29" target="_blank" class="hover:text-black">Book a Meeting</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-gray-100 text-sm text-gray-400">
+                <p>© 2025 Kesiva. All rights reserved.</p>
+                <div class="flex gap-4 mt-4 md:mt-0">
+                    <a href="#" class="hover:text-black"><i class="fab fa-linkedin"></i></a>
+                    <a href="#" class="hover:text-black"><i class="fab fa-twitter"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // --- 1. Navbar Scroll Effect ---
+        window.addEventListener('scroll', function() {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('shadow-sm');
+                navbar.classList.add('bg-white/95');
+            } else {
+                navbar.classList.remove('shadow-sm');
+                navbar.classList.remove('bg-white/95');
+            }
+        });
+
+        // --- 2. Text Scrubbing Engine (Grey to Black) ---
+        const scrubTargets = document.querySelectorAll('.scrub-target');
+
+        scrubTargets.forEach(target => {
+            const text = target.innerText;
+            target.innerHTML = text.split(/\s+/).map(word => `<span class="scrub-word">${word}</span> `).join('');
+        });
+
+        function handleScroll() {
+            const triggerBottom = window.innerHeight * 0.8;
+
+            document.querySelectorAll('.scrub-target').forEach(target => {
+                const words = target.querySelectorAll('.scrub-word');
+                const box = target.getBoundingClientRect();
+
+                // If element is in view
+                if(box.top < window.innerHeight && box.bottom > 0) {
+                    const progress = 1 - (box.top / (window.innerHeight * 0.6));
+
+                    const activeIndex = Math.floor(progress * words.length);
+
+                    words.forEach((word, idx) => {
+                        if (idx <= activeIndex) {
+                            word.classList.add('active');
+                        } else {
+                            word.classList.remove('active');
+                        }
+                    });
+                }
+            });
+        }
+        window.addEventListener('scroll', handleScroll);
+        // Trigger once on load
+        handleScroll();
+
+
+        // --- 3. Magnetic Buttons ---
+        const magneticBtns = document.querySelectorAll('.magnetic-btn');
+
+        magneticBtns.forEach(btn => {
+            btn.addEventListener('mousemove', (e) => {
+                const rect = btn.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width / 2;
+                const y = e.clientY - rect.top - rect.height / 2;
+
+                // Move button slightly towards cursor
+                btn.style.transform = `translate(${x * 0.2}px, ${y * 0.2}px)`;
+            });
+
+            btn.addEventListener('mouseleave', () => {
+                btn.style.transform = 'translate(0px, 0px)';
+            });
+        });
+
+
+        // --- 4. Standard Intersection Observer for Reveal Animations ---
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: "0px 0px -50px 0px"
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.reveal').forEach(el => {
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>
